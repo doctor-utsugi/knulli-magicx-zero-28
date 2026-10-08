@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Knulli ships InvertButtons=true, so ES accepts with "b". RetroArch maps
+# "a" straight to RetroPad A, so on the MagicX Zero 28 "a" is the right
+# (A) button and ES must accept with "a". Turn the swap off once on first
+# boot; later changes from the menu are kept.
+#
+
+read -r BOARD < /boot/boot/knulli.board
+[ "$BOARD" = "magicx-zero-28" ] || exit 0
+
+SETTINGS=/userdata/system/configs/emulationstation/es_settings.cfg
+MARKER=/userdata/system/.magicx-invertbuttons
+
+case "$1" in
+    start)
+        [ -f "$MARKER" ] && exit 0
+        [ -f "$SETTINGS" ] || exit 0
+        sed -i 's|<bool name="InvertButtons" value="true" />|<bool name="InvertButtons" value="false" />|' "$SETTINGS"
+        touch "$MARKER"
+        ;;
+    stop)
+        ;;
+esac
+
+exit 0
