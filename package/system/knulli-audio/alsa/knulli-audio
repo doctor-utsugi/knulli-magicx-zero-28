@@ -81,7 +81,13 @@ case "${ACTION}" in
                             amixer -c 0 sset 'Headphone' on
                             amixer -c 0 sset Headphone "$(knulli-settings-get audio.headphone || echo 0)"
                             amixer -c 0 sset 'ADC volume' 0
-                            amixer -c 0 sset 'LINEOUT volume' 0
+                            if [ "$BOARD" = "magicx-zero-28" ]; then
+                                # The MagicX speaker amp is fed from LINEOUT
+                                amixer -c 0 sset LINEOUT on
+                                amixer -c 0 sset 'LINEOUT volume' 26
+                            else
+                                amixer -c 0 sset 'LINEOUT volume' 0
+                            fi
 
                             amixer -c 0 sset 'DAC Swap' Off # Fixes reversed audio channels
 
