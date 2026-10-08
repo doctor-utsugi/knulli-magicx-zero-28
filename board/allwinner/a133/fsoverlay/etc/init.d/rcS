@@ -12,6 +12,21 @@ fi
 cd /lib/modules/4.9.191
 pvrsrvctl --start
 
+# With USB power present the PMIC powers the MagicX back on right after a
+# poweroff, so a cold boot on the charger shows the charging screen first.
+# A reboot leaves a flag so it boots straight through.
+if [ "$BOARD" = "magicx-zero-28" ]; then
+    RESTART_FLAG="/boot/restart.flag"
+    if [ -f "$RESTART_FLAG" ]; then
+        mount -o remount,rw /boot
+        rm -f "$RESTART_FLAG"
+        sync
+        mount -o remount,ro /boot
+    else
+        /usr/bin/charger
+    fi
+fi
+
 # Start the progress bar
 /usr/bin/progressbar &
 

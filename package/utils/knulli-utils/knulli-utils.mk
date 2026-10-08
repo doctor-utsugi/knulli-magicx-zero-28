@@ -10,7 +10,7 @@ KNULLI_UTILS_LICENSE = GPLv2
 
 KNULLI_UTILS_DEPENDENCIES = sdl2 sdl2_image sdl2_ttf sdl2_gfx zlib
 
-ifeq ($(BR2_PACKAGE_BATOCERA_TARGET_H700),y)
+ifneq ($(BR2_PACKAGE_BATOCERA_TARGET_H700)$(BR2_PACKAGE_BATOCERA_TARGET_A133),)
 KNULLI_UTILS_DEPENDENCIES += sdl sdl_image sdl_ttf sdl_gfx
 endif
 
@@ -34,7 +34,7 @@ define KNULLI_UTILS_BUILD_CMDS
 	$(TARGET_CXX) $(KNULLI_UTILS_CXXFLAGS) \
 		$(BR2_EXTERNAL_KNULLI_PATH)/package/utils/knulli-utils/progressbar_rk.cpp \
 		$(KNULLI_UTILS_SDL2_LDFLAGS) -o $(@D)/progressbar_rk
-	$(if $(BR2_PACKAGE_BATOCERA_TARGET_H700), \
+	$(if $(BR2_PACKAGE_BATOCERA_TARGET_H700)$(BR2_PACKAGE_BATOCERA_TARGET_A133), \
 		$(TARGET_CXX) $(KNULLI_UTILS_CXXFLAGS) \
 			$(BR2_EXTERNAL_KNULLI_PATH)/package/utils/knulli-utils/charger.cpp \
 			$(KNULLI_UTILS_SDL1_LDFLAGS) -o $(@D)/charger)
@@ -43,7 +43,7 @@ endef
 define KNULLI_UTILS_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/progressbar $(TARGET_DIR)/usr/bin/progressbar
 	$(INSTALL) -m 0755 -D $(@D)/progressbar_rk $(TARGET_DIR)/usr/bin/progressbar_rk
-	$(if $(BR2_PACKAGE_BATOCERA_TARGET_H700), \
+	$(if $(BR2_PACKAGE_BATOCERA_TARGET_H700)$(BR2_PACKAGE_BATOCERA_TARGET_A133), \
 		$(INSTALL) -m 0755 -D $(@D)/charger $(TARGET_DIR)/usr/bin/charger)
 endef
 
