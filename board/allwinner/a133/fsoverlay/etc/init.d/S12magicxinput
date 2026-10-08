@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# The simplepad driver probes from the initramfs, before /dev/ttyS3 exists,
+# and gives up. Bind it again once the gamepad UART is available.
+#
+
+read -r BOARD < /boot/boot/knulli.board
+[ "$BOARD" = "magicx-zero-28" ] || exit 0
+
+DRIVER=/sys/bus/platform/drivers/simplepad
+DEVICE="soc@03000000:simplepad"
+
+case "$1" in
+    start)
+        [ -e "$DRIVER/$DEVICE" ] && exit 0
+        for i in $(seq 1 50); do
+            [ -e /dev/ttyS3 ] && break
+            sleep 0.1
+        done
+        echo "$DEVICE" > "$DRIVER/bind"
+        ;;
+    stop)
+        ;;
+esac
+
+exit 0

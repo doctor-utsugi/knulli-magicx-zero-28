@@ -1,0 +1,3 @@
+# The MagicX Zero 28 gamepad also exposes a virtual mouse, so udev tags it as
+# a mouse and SDL ignores it. Tag it as a joystick instead.
+SUBSYSTEM=="input", ATTRS{name}=="magicx-input", ENV{ID_INPUT_JOYSTICK}="1", ENV{ID_INPUT_MOUSE}="", ENV{ID_INPUT_KEY}=""

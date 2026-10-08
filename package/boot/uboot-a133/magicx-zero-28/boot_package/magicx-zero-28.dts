@@ -3730,6 +3730,14 @@
 			phandle = <0x17e>;
 		};
 
+		cpudai-controller@0x050906000 {
+			compatible = "allwinner,sunxi-internal-cpudai";
+			reg = <0x00 0x5096000 0x00 0x32c>;
+			status = "okay";
+			linux,phandle = <0x1c9>;
+			phandle = <0x1c9>;
+		};
+
 		codec@0x05096000 {
 			compatible = "allwinner,sunxi-internal-codec";
 			reg = <0x00 0x5096000 0x00 0x32c>;
@@ -3755,6 +3763,7 @@
 		};
 
 		sound@0 {
+			sunxi,cpudai-controller = <0x1c9>;
 			compatible = "allwinner,sunxi-codec-machine";
 			interrupts = <0x00 0x19 0x04>;
 			sunxi,audio-codec = <0x7f>;
@@ -5073,7 +5082,7 @@
 
 			BTNA {
 				gpios = <0x46 0x03 0x0e 0x00 0x01 0x01 0x01>;
-				linux,code = <0x130>;
+				linux,code = <0x131>;
 				linux,code2 = <0x161>;
 				label = "BTNA";
 				debounce-interval = <0x0a>;
@@ -5081,7 +5090,7 @@
 
 			BTNB {
 				gpios = <0x46 0x03 0x0d 0x00 0x01 0x01 0x01>;
-				linux,code = <0x131>;
+				linux,code = <0x130>;
 				label = "BTNB";
 				debounce-interval = <0x0a>;
 			};
@@ -5184,12 +5193,13 @@
 			pinctrl-0;
 			pinctrl-names;
 			wlan_busnum = <0x01>;
-			wlan_power = "axp2202-bldo1";
+			wlan_power_num = <0x01>;
+			wlan_power1 = "axp2202-bldo1";
 			wlan_io_regulator;
 			wlan_regon = <0xe3 0x0b 0x05 0x01 0xffffffff 0xffffffff 0x00>;
 			wlan_hostwake = <0xe3 0x0b 0x06 0x06 0xffffffff 0xffffffff 0x00>;
-			chip_en;
-			power_en = <0xe3 0x0b 0x07 0x01 0xffffffff 0xffffffff 0x00>;
+			chip_en = <0xe3 0x0b 0x07 0x01 0xffffffff 0xffffffff 0x00>;
+			power_en;
 			status = "okay";
 			linux,phandle = <0x1b8>;
 			phandle = <0x1b8>;

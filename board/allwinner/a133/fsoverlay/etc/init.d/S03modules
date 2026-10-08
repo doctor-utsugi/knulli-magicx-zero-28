@@ -4,7 +4,10 @@ BOARD=$(cat /boot/boot/knulli.board)
 
 case $1 in
     start)
-      if [ "$BOARD" = "trimui-smart-pro" ]; then
+      if [ "$BOARD" = "magicx-zero-28" ]; then
+        # Realtek RTL8189ES on SDIO, not the XRadio chip of the TrimUI boards
+        insmod /lib/modules/4.9.191/8189es.ko
+      elif [ "$BOARD" = "trimui-smart-pro" ]; then
         insmod /lib/modules/4.9.191/xradio_mac_tsp.ko
         insmod /lib/modules/4.9.191/xradio_core_tsp.ko
         insmod /lib/modules/4.9.191/xradio_wlan_tsp.ko 
@@ -18,7 +21,9 @@ case $1 in
       insmod /lib/modules/4.9.191/iptable_filter.ko
       ;;
   stop)
-      if [ "$BOARD" = "trimui-smart-pro" ]; then
+      if [ "$BOARD" = "magicx-zero-28" ]; then
+        rmmod 8189es
+      elif [ "$BOARD" = "trimui-smart-pro" ]; then
         rmmod xradio_wlan_tsp
         rmmod xradio_core_tsp
         rmmod xradio_mac_tsp
