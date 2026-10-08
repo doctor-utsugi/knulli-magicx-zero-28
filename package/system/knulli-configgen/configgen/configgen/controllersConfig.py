@@ -191,11 +191,12 @@ def getGamesMetaData(system: str, rom: str | Path) -> dict[str, str]:
         targetSystem = 'arcade'
 
     for nodesystem in root.findall(".//system"):
-        for sysname in nodesystem.get("name").split(','):
+        # gamesdb.xml from newer EmulationStation uses "id" instead of "name"
+        for sysname in (nodesystem.get("name") or nodesystem.get("id") or "").split(','):
             if sysname == targetSystem:
                 # search the game named default
                 for nodegame in nodesystem.findall(".//game"):
-                    if nodegame.get("name") == "default":
+                    if (nodegame.get("name") or nodegame.get("id")) == "default":
                         for child in nodegame:
                             for attribute in child.attrib:
                                 key = "{}_{}".format(child.tag, attribute)
@@ -203,7 +204,8 @@ def getGamesMetaData(system: str, rom: str | Path) -> dict[str, str]:
                                 eslog.info("found game metadata {}={} (system level)".format(key, res[key]))
                         break
                 for nodegame in nodesystem.findall(".//game"):
-                    if nodegame.get("name") != "default" and nodegame.get("name") in game:
+                    gamename = nodegame.get("name") or nodegame.get("id")
+                    if gamename and gamename != "default" and gamename in game:
                         for child in nodegame:
                             for attribute in child.attrib:
                                 key = "{}_{}".format(child.tag, attribute)
