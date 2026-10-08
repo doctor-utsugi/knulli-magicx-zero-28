@@ -15,10 +15,6 @@ case "$1" in
             knulli-audio set speakers
         fi
         amixer -D hw:audiocodec sset LINEOUT on
-        # The MagicX Zero 28 speaker amp hangs off LINEOUT, which boots muted at volume 0
-        if [ "$BOARD" = "magicx-zero-28" ]; then
-            amixer -D hw:audiocodec sset "LINEOUT volume" 26
-        fi
         ;;
     stop)
         # do nothing

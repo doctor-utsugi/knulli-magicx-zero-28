@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# The MagicX Zero 28 speaker amp hangs off LINEOUT, which S06audio's
+# "alsactl init" leaves at volume 0. Raise it once the mixer is reset.
+#
+
+read -r BOARD < /boot/boot/knulli.board
+[ "$BOARD" = "magicx-zero-28" ] || exit 0
+
+case "$1" in
+    start)
+        amixer -D hw:audiocodec sset LINEOUT on >/dev/null
+        amixer -D hw:audiocodec sset "LINEOUT volume" 26 >/dev/null
+        ;;
+    stop)
+        ;;
+esac
+
+exit 0
