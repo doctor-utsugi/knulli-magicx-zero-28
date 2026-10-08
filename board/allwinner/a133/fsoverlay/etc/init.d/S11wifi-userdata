@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# S08connman runs before S11share mounts /userdata, so it reads wifi settings
+# from /boot/knulli-boot.conf and ignores the ones saved from the menu in
+# /userdata/system/knulli.conf. Reconfigure connman once userdata is there.
+#
+
+KNULLICONF=/userdata/system/knulli.conf
+
+case "$1" in
+    start)
+        [ -f "$KNULLICONF" ] || exit 0
+        [ "$(/usr/bin/knulli-settings-get -f "$KNULLICONF" wifi.enabled)" = "1" ] || exit 0
+        [ -f /var/lib/connman/knulli_wifi.config ] && exit 0
+        /etc/init.d/S08connman reload
+        ;;
+    stop)
+        ;;
+esac
+
+exit 0
