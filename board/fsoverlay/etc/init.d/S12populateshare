@@ -47,7 +47,7 @@ do
 	find "$IN""/""$DIR" -mindepth 1 -maxdepth 1 -type d |
 	    while read SUBDIR
 	    do
-		BNAME=$(basename "$SUBDIR")
+		BNAME="${SUBDIR##*/}"
 		TDIR="$OUT""/""$DIR""/""$BNAME"
 		if test ! -e "$TDIR" # ASSUME THAT PARENTS ARE LISTED BEFORE CHILDREN
 		then
