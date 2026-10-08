@@ -9,6 +9,10 @@ GADGET=/sys/kernel/config/usb_gadget/g1
 case "$1" in
   start)
     usbmode=$(/usr/bin/knulli-settings-get system.usbmode)
+    # The MagicX Zero 28 has no other recovery path when wifi is down, so default to adb
+    if [ -z "$usbmode" ] && [ "$(cat /boot/boot/knulli.board 2>/dev/null)" = "magicx-zero-28" ]; then
+      usbmode=adb
+    fi
     if [ -z "$usbmode" ] || [ "$usbmode" = "off" ]; then
       "$0" stop
       exit 1
