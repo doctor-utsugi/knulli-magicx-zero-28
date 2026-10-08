@@ -298,7 +298,8 @@ fi
 VGSCAN=/usr/sbin/vgscan
 VGCHANGE=/usr/sbin/vgchange
 
-if [ -x ${VGSCAN} -a -x ${VGCHANGE} ]
+# A133 handhelds only boot from their SD card, so there are no LVM volumes to find
+if [ -x ${VGSCAN} -a -x ${VGCHANGE} ] && [ "$(cat /usr/share/knulli/knulli.arch 2>/dev/null)" != "a133" ]
 then
     ${VGSCAN}
     ${VGCHANGE} -ay
