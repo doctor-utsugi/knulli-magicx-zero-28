@@ -8,7 +8,15 @@ case "$1" in
     if seed="$(/usr/bin/knulli-settings-get -f /boot/knulli-boot.conf randomseed)"
     then
       printf "Restoring random seed: "
-      echo $seed | xxd -r -ps > /dev/urandom
+      # Credit the saved seed as entropy (RNDADDENTROPY), otherwise the CRNG
+      # stays uninitialised for ~20 s and every getrandom() caller blocks boot.
+      echo $seed | PYTHONHASHSEED=0 python3 -c '
+import fcntl, struct, sys
+data = bytes.fromhex(sys.stdin.read().strip())
+data += b"\0" * (-len(data) % 4)
+with open("/dev/random", "wb") as f:
+    fcntl.ioctl(f, 0x40085203, struct.pack("ii", len(data) * 8, len(data)) + data)
+' || echo $seed | xxd -r -ps > /dev/urandom
       echo "done."
     fi
     ;;
@@ -23,5 +31,3 @@ case "$1" in
     echo "usage: $0 {start|stop}"
     ;;
 esac
-
-exit 0
