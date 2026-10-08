@@ -5042,8 +5042,8 @@
 		simplepad {
 			compatible = "simplepad";
 			joysticks = <0x02>;
-			joystick1_invert_x = <0x01>;
-			joystick1_invert_y = <0x01>;
+			joystick1_invert = <0x01>;
+			joystick2_invert = <0x00>;
 			uart_path = "/dev/ttyS3";
 			virtual_mosue_used = <0x01>;
 			switch_mosue_key = <0x13e>;
