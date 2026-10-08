@@ -44,6 +44,8 @@ fi
 # calculate min from max
 XMIN=$(( (XMAX + 99) / 100 ))
 [ "$XMIN" -lt 3 ] && XMIN=3
+# The MagicX Zero 28 backlight stays dark below a raw value of 16
+[ "$(cat /boot/boot/knulli.board 2>/dev/null)" = "magicx-zero-28" ] && XMIN=16
 
 FB_BLANK=/sys/class/graphics/fb0/blank
 
