@@ -21,6 +21,9 @@ cp "${BOARD_DIR}/uInitrd"            "${KNULLI_BINARIES_DIR}/boot/uInitrd"      
 cp "${BINARIES_DIR}/rootfs.squashfs" "${KNULLI_BINARIES_DIR}/boot/boot/knulli.update" || exit 1
 cp "${BOARD_DIR}/knulli-boot.conf" "${KNULLI_BINARIES_DIR}/boot/knulli-boot.conf"   || exit 1
 cp "${BOARD_DIR}/bootlogo.bmp"       "${KNULLI_BINARIES_DIR}/boot/bootlogo.bmp"         || exit 1
+cp "${BOARD_DIR}/bootlogo-fb.bmp"    "${KNULLI_BINARIES_DIR}/boot/bootlogo-fb.bmp"      || exit 1
+# u-boot shows bat/*.bmp in charge mode (cold boot with USB power)
+cp -r "${BOARD_DIR}/bat"             "${KNULLI_BINARIES_DIR}/boot/"                     || exit 1
 #cp "${BOARD_DIR}/boot/asound.state"  "${KNULLI_BINARIES_DIR}/boot/asound.state"         || exit 1
 
 cp -r "${BOARD_DIR}/partitions"		"${KNULLI_BINARIES_DIR}"				|| exit 1
