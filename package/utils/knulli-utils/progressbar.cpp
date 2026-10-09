@@ -246,8 +246,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // Load the background image
-    SDL_Surface* bgSurface = SDL_LoadBMP("/boot/bootlogo.bmp");
+    // bootlogo-fb.bmp is for boards whose bootlogo.bmp is pre-rotated for u-boot (MagicX Zero 28)
+    SDL_Surface* bgSurface = SDL_LoadBMP("/boot/bootlogo-fb.bmp");
+    if (bgSurface == NULL)
+        bgSurface = SDL_LoadBMP("/boot/bootlogo.bmp");
     if (bgSurface == NULL) {
         fprintf(stderr, "Could not load background image: %s\n", SDL_GetError());
         SDL_DestroyRenderer(renderer);

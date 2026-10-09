@@ -7,6 +7,13 @@ if [ "$BOARD" = "powkiddy-v90s" ] || [ "$BOARD" = "powkiddy-v20" ] ; then
 	mount -o bind /lib/modules/4.9.191_v90s /lib/modules/4.9.191
 fi
 
+# The GPU driver shows fb0 on load, still uninitialized (white stripes). bootlogo-fb.bmp
+# is top-down 640x480 BGRA, so its pixel data fills each of the two fb0 buffers as-is.
+if [ -f /boot/bootlogo-fb.bmp ] && [ "$(cat /sys/class/graphics/fb0/bits_per_pixel)" = 32 ] \
+   && [ "$(cat /sys/class/graphics/fb0/virtual_size)" = "640,960" ]; then
+	{ tail -c 1228800 /boot/bootlogo-fb.bmp; tail -c 1228800 /boot/bootlogo-fb.bmp; } > /dev/fb0
+fi
+
 # We need the graphics module in order to use SDL since we are
 # using the sdl-compat/SDL2 for rendering
 cd /lib/modules/4.9.191

@@ -264,8 +264,10 @@ void displayMessage(const std::string& chargeStatus, const std::string& batteryL
         exit(EXIT_FAILURE);
     }
 
-    // Load the background image
-    SDL_Surface* bgSurface = SDL_LoadBMP("/boot/bootlogo.bmp");
+    // bootlogo-fb.bmp is for boards whose bootlogo.bmp is pre-rotated for u-boot (MagicX Zero 28)
+    SDL_Surface* bgSurface = SDL_LoadBMP("/boot/bootlogo-fb.bmp");
+    if (bgSurface == NULL)
+        bgSurface = SDL_LoadBMP("/boot/bootlogo.bmp");
     if (bgSurface == NULL) {
         fprintf(stderr, "Could not load background image: %s\n", SDL_GetError());
         TTF_Quit();
